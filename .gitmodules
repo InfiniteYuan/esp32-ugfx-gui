@@ -1,0 +1,4 @@
+
+[submodule "ugfx_gui/ugfx"]
+	path = ugfx_gui/ugfx
+	url = https://git.ugfx.io/ugfx/ugfx.git
