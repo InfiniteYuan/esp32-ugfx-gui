@@ -24,7 +24,9 @@
  - 增加自己的板级文件 board_SSD1306.c
  - 实现相关缺少函数，相关函数可以在 drivers 的驱动模板中看到。你需要选择性的实现一些函数，另一些函数使用默认的即可。
 这是我的工程结构，其中实现了：LCD(ST7789)、touch(XPT2046)
+
 ![这是我的工程结构](http://img.blog.csdn.net/20180110181739637?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvcXFfMjcxMTQzOTc=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
 在下面的两节，我将介绍我在移植 ugfx 中的部分过程，可供参考
 ## 移植 LCD 驱动
  - 由于 ugfx 官方未提供 st7789 的驱动模板，在这里我们使用 drivers/gdisp/ST7735 中的驱动模板，将其拷贝到我们的 ugfx 文件夹下，并从 ST7565 中拷贝一个头文件 board_ST7565_template.h，共需添加五个文件。
