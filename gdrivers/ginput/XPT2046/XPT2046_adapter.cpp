@@ -12,26 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/*C Includes*/
+/* C Includes */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-/*RTOS Includes*/
+/* RTOS Includes */
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/event_groups.h"
 #include "freertos/semphr.h"
 
-/*SPI Includes*/
+/* SPI Includes */
 #include "iot_xpt2046.h"
 #include "XPT2046_adapter.h"
 
-/*uGFX Include*/
+/* uGFX Include */
 #include "ugfx_driver_config.h"
 
 static CXpt2046* xpt = NULL;
-
 class CTouchAdapter: public CXpt2046
 {
 public:
@@ -45,12 +44,12 @@ void board_touch_init()
 {
     xpt_conf_t xpt_conf;
     xpt_conf.pin_num_cs   = UGFX_TOUCH_CS_GPIO;        /*!<SPI Chip Select Pin*/
-    xpt_conf.pin_num_irq  = UGFX_TOUCH_IRQ_GPIO;        /*!< Touch screen IRQ pin */
+    xpt_conf.pin_num_irq  = UGFX_TOUCH_IRQ_GPIO;       /*!< Touch screen IRQ pin */
     xpt_conf.clk_freq     = 1 * 1000 * 1000;      /*!< spi clock frequency */
     xpt_conf.spi_host     = HSPI_HOST;            /*!< spi host index*/
     xpt_conf.pin_num_miso = -1;               /*!<MasterIn, SlaveOut pin*/
     xpt_conf.pin_num_mosi = -1;               /*!<MasterOut, SlaveIn pin*/
-    xpt_conf.pin_num_clk  = -1;                /*!<SPI Clock pin*/
+    xpt_conf.pin_num_clk  = -1;               /*!<SPI Clock pin*/
     xpt_conf.dma_chan     = 1;
     xpt_conf.init_spi_bus = false;            /*!< Whether to initialize SPI bus */
 

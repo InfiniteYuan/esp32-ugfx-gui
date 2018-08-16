@@ -28,7 +28,7 @@
 //#include
 
 #ifndef GDISP_LLD_PIXELFORMAT
-    #error "GDISP FrameBuffer: You must specify a GDISP_LLD_PIXELFORMAT in your board_framebuffer.h or your makefile"
+#error "GDISP FrameBuffer: You must specify a GDISP_LLD_PIXELFORMAT in your board_framebuffer.h or your makefile"
 #endif
 
 // This driver currently only supports unpacked formats with more than 8 bits per pixel
@@ -36,7 +36,7 @@
 // Note: At the time this file is included we have not calculated all our color
 //          definitions so we need to do this by hand.
 #if (GDISP_LLD_PIXELFORMAT & 0x4000) && (GDISP_LLD_PIXELFORMAT & 0xFF) != 8
-    #error "GDISP FrameBuffer: This driver does not support the specified GDISP_LLD_PIXELFORMAT"
+#error "GDISP FrameBuffer: This driver does not support the specified GDISP_LLD_PIXELFORMAT"
 #endif
 
 #endif /* UGFX_LCD_DRIVER_FRAMEBUFFER_MODE */

@@ -38,7 +38,7 @@ extern "C" {
 void board_lcd_init();
 
 /**
-  * @brief Flush the specified area at (x,y), 
+  * @brief Flush the specified area at (x,y),
   *        the width of the specified area is w, the height of the specified area is h.
   *
   * @param x The ordinate of the starting point of the specified area.
@@ -48,6 +48,18 @@ void board_lcd_init();
   * @param h the height of the specified area.
   */
 void board_lcd_flush(int16_t x, int16_t y, const uint16_t *bitmap, int16_t w, int16_t h);
+
+/**
+   * @brief   Fill an area using a bitmap
+   * @pre		GDISP_HARDWARE_BITFILLS is GFXON
+   *
+   * @param	x,y	The area position
+   * @param	w,h	The area size
+   * @param	bitmap		The pointer to the bitmap
+   *
+   * @note		The parameter variables must not be altered by the driver.
+   */
+void board_lcd_blit_area(int16_t x, int16_t y, uint16_t* bitmap, int16_t w, int16_t h);
 
 /**
   * @brief Write cmd to lcd.
@@ -92,7 +104,7 @@ void board_lcd_write_cmddata(uint8_t cmd, uint32_t data);
   * @param data Pointer to write data
   * @param length The size of the data to be written
   */
-void board_lcd_write_datas(uint8_t* data, uint16_t length);
+void board_lcd_write_datas(uint8_t *data, uint16_t length);
 
 /**
   * @brief Set backlight of lcd

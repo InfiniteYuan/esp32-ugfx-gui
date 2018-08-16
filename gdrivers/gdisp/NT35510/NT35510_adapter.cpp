@@ -35,20 +35,20 @@
 /* uGFX Include */
 #include "ugfx_driver_config.h"
 
-static lcd_dev_t * lcd_obj = NULL;
-static uint16_t* pFrameBuffer = NULL;
+static lcd_dev_t *lcd_obj = NULL;
+static uint16_t *pFrameBuffer = NULL;
 lcd_dev_t *LcdNt35510Create(uint16_t x_size, uint16_t y_size);
 
 #if UGFX_DRIVER_AUTO_FLUSH_ENABLE
 SemaphoreHandle_t flush_sem = NULL;
 
-void board_lcd_flush_task(void* arg)
+void board_lcd_flush_task(void *arg)
 {
     portBASE_TYPE res;
-    while(1) {
+    while (1) {
         res = xSemaphoreTake(flush_sem, portMAX_DELAY);
         if (res == pdTRUE) {
-            lcd_obj->lcd.LcdDiawBmp((uint16_t*)pFrameBuffer, 0, 0, UGFX_DRIVER_SCREEN_WIDTH, UGFX_DRIVER_SCREEN_HEIGHT);
+            lcd_obj->lcd.LcdDrawBmp((uint16_t *)pFrameBuffer, 0, 0, UGFX_DRIVER_SCREEN_WIDTH, UGFX_DRIVER_SCREEN_HEIGHT);
             vTaskDelay(UGFX_DRIVER_AUTO_FLUSH_INTERVAL / portTICK_RATE_MS);
         }
     }
@@ -58,7 +58,7 @@ void board_lcd_flush_task(void* arg)
 void board_lcd_init()
 {
     /*Initialize LCD*/
-    if(lcd_obj == NULL) {
+    if (lcd_obj == NULL) {
         lcd_obj = LcdNt35510Create(UGFX_DRIVER_SCREEN_WIDTH, UGFX_DRIVER_SCREEN_HEIGHT);
     }
 
@@ -71,14 +71,19 @@ void board_lcd_init()
 #endif
 }
 
-void board_lcd_flush(int16_t x, int16_t y, uint16_t* bitmap, int16_t w, int16_t h)
+void board_lcd_flush(int16_t x, int16_t y, uint16_t *bitmap, int16_t w, int16_t h)
 {
 #if UGFX_DRIVER_AUTO_FLUSH_ENABLE
     pFrameBuffer = bitmap;
     xSemaphoreGive(flush_sem);
 #else
-    lcd_obj->lcd.LcdDiawBmp(bitmap, x, y, 480, 800);
+    lcd_obj->lcd.LcdDrawBmp(bitmap, x, y, 480, 800);
 #endif
+}
+
+void board_lcd_blit_area(int16_t x, int16_t y, uint16_t *bitmap, int16_t w, int16_t h)
+{
+    lcd_obj->lcd.LcdDrawBmp(bitmap, x, y, w, h);
 }
 
 void board_lcd_write_cmd(uint16_t cmd)

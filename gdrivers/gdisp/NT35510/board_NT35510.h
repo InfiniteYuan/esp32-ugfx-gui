@@ -84,6 +84,14 @@ static GFXINLINE void write_cmddata(GDisplay *g, uint16_t cmd, uint32_t data)
     board_lcd_write_cmddata(cmd, data);
 }
 
+static GFXINLINE void blit_area(GDisplay *g)
+{
+	const uint16_t	*buffer;
+	buffer = (const uint16_t *)g->p.ptr;
+	buffer += g->p.y1 * g->p.x2 + g->p.x1;	// The buffer start position
+    board_lcd_blit_area(g->p.x, g->p.y, buffer, g->p.cx, g->p.cy);
+}
+
 static GFXINLINE void set_backlight(GDisplay *g, uint16_t data)
 {
     (void) g;
@@ -91,17 +99,17 @@ static GFXINLINE void set_backlight(GDisplay *g, uint16_t data)
 
 static GFXINLINE void set_viewport(GDisplay *g)
 {
-    WriteReg((uint16_t)(NT35510_CASET), (uint16_t)(g->p.x)>>8);
-    WriteReg((uint16_t)(NT35510_CASET+1), (uint16_t)(g->p.x) & 0xff);
-    WriteReg((uint16_t)(NT35510_CASET+2), (uint16_t)(g->p.x+g->p.cx-1) >> 8);
-    WriteReg((uint16_t)(NT35510_CASET+3), (uint16_t)(g->p.x+g->p.cx-1) & 0xff);
-    WriteReg((uint16_t)(NT35510_RASET), (uint16_t)(g->p.y)>>8);
-    WriteReg((uint16_t)(NT35510_RASET+1), (uint16_t)(g->p.y)&0xff);
-    WriteReg((uint16_t)(NT35510_RASET+2), (uint16_t)(g->p.y+g->p.cy-1) >> 8);
-    WriteReg((uint16_t)(NT35510_RASET+3), (uint16_t)(g->p.y+g->p.cy-1) & 0xff);
+    WriteReg((uint16_t)(NT35510_CASET), (uint16_t)(g->p.x) >> 8);
+    WriteReg((uint16_t)(NT35510_CASET + 1), (uint16_t)(g->p.x) & 0xff);
+    WriteReg((uint16_t)(NT35510_CASET + 2), (uint16_t)(g->p.x + g->p.cx - 1) >> 8);
+    WriteReg((uint16_t)(NT35510_CASET + 3), (uint16_t)(g->p.x + g->p.cx - 1) & 0xff);
+    WriteReg((uint16_t)(NT35510_RASET), (uint16_t)(g->p.y) >> 8);
+    WriteReg((uint16_t)(NT35510_RASET + 1), (uint16_t)(g->p.y) & 0xff);
+    WriteReg((uint16_t)(NT35510_RASET + 2), (uint16_t)(g->p.y + g->p.cy - 1) >> 8);
+    WriteReg((uint16_t)(NT35510_RASET + 3), (uint16_t)(g->p.y + g->p.cy - 1) & 0xff);
     WriteCmd((uint16_t)NT35510_RAMWR);
 }
 
 #endif /* _GDISP_LLD_BOARD_H */
 
-#endif 
+#endif

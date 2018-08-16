@@ -49,7 +49,7 @@
 #define I2C_SDA    (1)
 static ft5x06_handle_t dev = NULL;
 
-static bool_t init_board(GMouse* m, unsigned driverinstance) 
+static bool_t init_board(GMouse *m, unsigned driverinstance)
 {
     i2c_bus_handle_t i2c_bus = NULL;
     i2c_config_t conf = {
@@ -65,29 +65,29 @@ static bool_t init_board(GMouse* m, unsigned driverinstance)
     return true;
 }
 
-static GFXINLINE void aquire_bus(GMouse* m) 
+static GFXINLINE void aquire_bus(GMouse *m)
 {
     /* Code here*/
 }
 
-static GFXINLINE void release_bus(GMouse* m) 
+static GFXINLINE void release_bus(GMouse *m)
 {
     /* Code here*/
 }
 
-static void write_reg(GMouse* m, uint8_t reg, uint8_t val) 
+static void write_reg(GMouse *m, uint8_t reg, uint8_t val)
 {
     iot_ft5x06_write(dev, reg, 1, &val);
 }
 
-static uint8_t read_byte(GMouse* m, uint8_t reg) 
+static uint8_t read_byte(GMouse *m, uint8_t reg)
 {
     uint8_t data;
     iot_ft5x06_read(dev, reg, 1, &data);
     return data;
 }
 
-static uint16_t read_word(GMouse* m, uint8_t reg) 
+static uint16_t read_word(GMouse *m, uint8_t reg)
 {
     uint8_t data[2];
     uint16_t result;
@@ -98,18 +98,18 @@ static uint16_t read_word(GMouse* m, uint8_t reg)
 
 static GFXINLINE void touch_save_calibration(GMouse *m, const void *buf, size_t sz)
 {
-    iot_param_save((const char*)TOUCH_CAL_VAL_NAMESPACE, (const char*) TOUCH_CAL_VAL_KEY, (void*) buf, sz);
+    iot_param_save((const char *)TOUCH_CAL_VAL_NAMESPACE, (const char *) TOUCH_CAL_VAL_KEY, (void *) buf, sz);
 }
 
 static GFXINLINE bool touch_load_calibration(GMouse *m, void *buf, size_t sz)
 {
-    esp_err_t res = iot_param_load((const char*)TOUCH_CAL_VAL_NAMESPACE, (const char*) TOUCH_CAL_VAL_KEY, (void*) buf);
+    esp_err_t res = iot_param_load((const char *)TOUCH_CAL_VAL_NAMESPACE, (const char *) TOUCH_CAL_VAL_KEY, (void *) buf);
     return (res == ESP_OK);
 }
 
 static GFXINLINE bool touch_erase_calibration(GMouse *m, void *buf, size_t sz)
 {
-    esp_err_t res = iot_param_erase((const char*)TOUCH_CAL_VAL_NAMESPACE, (const char*) TOUCH_CAL_VAL_KEY);
+    esp_err_t res = iot_param_erase((const char *)TOUCH_CAL_VAL_NAMESPACE, (const char *) TOUCH_CAL_VAL_KEY);
     return (res == ESP_OK);
 }
 

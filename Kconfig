@@ -2,7 +2,7 @@ menu "HMI components"
 
     choice GUI_LIV_SELECT
         bool "GUI Library Select"
-        default LVGL_GUI_ENABLE
+        default UGFX_GUI_ENABLE
         
         config UGFX_GUI_ENABLE
             bool "uGFX GUI enable"

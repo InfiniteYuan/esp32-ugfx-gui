@@ -83,9 +83,17 @@ static GFXINLINE void write_cmddata(GDisplay *g, uint8_t cmd, uint32_t data)
     board_lcd_write_cmddata(cmd, data);
 }
 
-static GFXINLINE void write_datas(GDisplay *g, uint8_t* data, uint16_t length)
+static GFXINLINE void write_datas(GDisplay *g, uint8_t *data, uint16_t length)
 {
     board_lcd_write_datas(data, length);
+}
+
+static GFXINLINE void blit_area(GDisplay *g)
+{
+	const uint16_t	*buffer;
+	buffer = (const uint16_t *)g->p.ptr;
+	buffer += g->p.y1 * g->p.x2 + g->p.x1;	// The buffer start position
+    board_lcd_blit_area(g->p.x, g->p.y, buffer, g->p.cx, g->p.cy);
 }
 
 static GFXINLINE void set_backlight(GDisplay *g, uint16_t data)
@@ -95,8 +103,8 @@ static GFXINLINE void set_backlight(GDisplay *g, uint16_t data)
 
 static GFXINLINE void set_viewport(GDisplay *g)
 {
-    write_cmddata(g, ST7789_CASET, MAKEWORD( ((g->p.x) >> 8), (g->p.x) & 0xFF, ((g->p.x+g->p.cx-1) >> 8), (g->p.x+g->p.cx-1) & 0xFF));
-    write_cmddata(g, ST7789_RASET, MAKEWORD( ((g->p.y) >> 8), (g->p.y) & 0xFF, ((g->p.y+g->p.cy-1) >> 8), (g->p.y+g->p.cy-1) & 0xFF));
+    write_cmddata(g, ST7789_CASET, MAKEWORD( ((g->p.x) >> 8), (g->p.x) & 0xFF, ((g->p.x + g->p.cx - 1) >> 8), (g->p.x + g->p.cx - 1) & 0xFF));
+    write_cmddata(g, ST7789_RASET, MAKEWORD( ((g->p.y) >> 8), (g->p.y) & 0xFF, ((g->p.y + g->p.cy - 1) >> 8), (g->p.y + g->p.cy - 1) & 0xFF));
     write_cmd (g, ST7789_RAMWR);
 }
 

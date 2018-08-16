@@ -24,38 +24,38 @@
 
 // #define SSD1306_PAGE_PREFIX    0x40
 
-static GFXINLINE void init_board(GDisplay *g) 
+static GFXINLINE void init_board(GDisplay *g)
 {
     board_lcd_init();
 }
 
-static GFXINLINE void post_init_board(GDisplay *g) 
+static GFXINLINE void post_init_board(GDisplay *g)
 {
     (void) g;
 }
 
-static GFXINLINE void setpin_reset(GDisplay *g, bool_t state) 
+static GFXINLINE void setpin_reset(GDisplay *g, bool_t state)
 {
     (void) g;
     (void) state;
 }
 
-static GFXINLINE void acquire_bus(GDisplay *g) 
+static GFXINLINE void acquire_bus(GDisplay *g)
 {
     (void) g;
 }
 
-static GFXINLINE void release_bus(GDisplay *g) 
+static GFXINLINE void release_bus(GDisplay *g)
 {
     (void) g;
 }
 
-static GFXINLINE void write_cmd(GDisplay *g, uint8_t cmd) 
+static GFXINLINE void write_cmd(GDisplay *g, uint8_t cmd)
 {
     board_lcd_write_cmd(cmd);
 }
 
-static GFXINLINE void write_data(GDisplay *g, uint8_t* data, uint16_t length) 
+static GFXINLINE void write_data(GDisplay *g, uint8_t *data, uint16_t length)
 {
     board_lcd_write_datas(data, length);
 }

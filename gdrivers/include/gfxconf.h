@@ -119,7 +119,7 @@
 #define GDISP_NEED_IMAGE                             TRUE
 //    #define GDISP_NEED_IMAGE_NATIVE                  FALSE
     #define GDISP_NEED_IMAGE_GIF                     TRUE
-//        #define GDISP_IMAGE_GIF_BLIT_BUFFER_SIZE     32
+        #define GDISP_IMAGE_GIF_BLIT_BUFFER_SIZE     CONFIG_UGFX_DRIVER_SCREEN_WIDTH*2*20
     #define GDISP_NEED_IMAGE_BMP                     TRUE
 //        #define GDISP_NEED_IMAGE_BMP_1               TRUE
 //        #define GDISP_NEED_IMAGE_BMP_4               TRUE
@@ -129,7 +129,7 @@
 //        #define GDISP_NEED_IMAGE_BMP_16              TRUE
 //        #define GDISP_NEED_IMAGE_BMP_24              TRUE
 //        #define GDISP_NEED_IMAGE_BMP_32              TRUE
-//        #define GDISP_IMAGE_BMP_BLIT_BUFFER_SIZE     32
+        #define GDISP_IMAGE_BMP_BLIT_BUFFER_SIZE     CONFIG_UGFX_DRIVER_SCREEN_WIDTH*2*20
     #define GDISP_NEED_IMAGE_JPG                     TRUE
     #define GDISP_NEED_IMAGE_PNG                     TRUE
 //        #define GDISP_NEED_IMAGE_PNG_INTERLACED      FALSE
@@ -147,8 +147,8 @@
 //        #define GDISP_NEED_IMAGE_PNG_RGB_16          TRUE
 //        #define GDISP_NEED_IMAGE_PNG_RGBALPHA_8      TRUE
 //        #define GDISP_NEED_IMAGE_PNG_RGBALPHA_16     TRUE
-//        #define GDISP_IMAGE_PNG_BLIT_BUFFER_SIZE     32
-//        #define GDISP_IMAGE_PNG_FILE_BUFFER_SIZE     8
+        #define GDISP_IMAGE_PNG_BLIT_BUFFER_SIZE     CONFIG_UGFX_DRIVER_SCREEN_WIDTH*2*20
+        #define GDISP_IMAGE_PNG_FILE_BUFFER_SIZE     8
 //        #define GDISP_IMAGE_PNG_Z_BUFFER_SIZE        32768
 //    #define GDISP_NEED_IMAGE_ACCOUNTING              FALSE
 
@@ -164,7 +164,7 @@
 #elif (CONFIG_UGFX_DISP_ROTATE == 3)
 #define GDISP_DEFAULT_ORIENTATION                    GDISP_ROTATE_270    // If not defined the native hardware orientation is used.
 #endif
-//#define GDISP_LINEBUF_SIZE                           128
+#define GDISP_LINEBUF_SIZE                           CONFIG_UGFX_DRIVER_SCREEN_WIDTH*4
 // #define GDISP_STARTUP_COLOR                            Red
 #define GDISP_NEED_STARTUP_LOGO                      FALSE
 
@@ -245,8 +245,8 @@
 #define GWIN_NEED_CONTAINERS                         TRUE
     #define GWIN_NEED_CONTAINER                      TRUE
     #define GWIN_NEED_FRAME                          TRUE
-    #define GWIN_NEED_TABSET                         TRUE
-//        #define GWIN_TABSET_TABHEIGHT                18
+    // #define GWIN_NEED_TABSET                         TRUE
+    //    #define GWIN_TABSET_TABHEIGHT                25
 
 
 ///////////////////////////////////////////////////////////////////////////

@@ -44,8 +44,8 @@
 class CLcdAdapter: public CSsd1306
 {
 public:
-    const uint8_t* pFrameBuffer = NULL;
-    CLcdAdapter(CI2CBus *p_i2c_bus):CSsd1306(p_i2c_bus)
+    const uint8_t *pFrameBuffer = NULL;
+    CLcdAdapter(CI2CBus *p_i2c_bus): CSsd1306(p_i2c_bus)
     {
         gpio_config_t conf;
         conf.pin_bit_mask = (1 << POWER_CNTL_IO);
@@ -64,26 +64,27 @@ public:
     {
         iot_ssd1306_write_byte(get_dev_handle(), data, SSD1306_DAT);
     }
-    void inline writeData(uint8_t* data, uint16_t length)
+    void inline writeData(uint8_t *data, uint16_t length)
     {
-        for(uint16_t i = 0; i < length; i++)
+        for (uint16_t i = 0; i < length; i++) {
             iot_ssd1306_write_byte(get_dev_handle(), data[i], SSD1306_DAT);
+        }
     }
 };
 
-static CLcdAdapter* lcd_obj = NULL;
-static CI2CBus* i2c_bus = NULL;
+static CLcdAdapter *lcd_obj = NULL;
+static CI2CBus *i2c_bus = NULL;
 
 #if UGFX_DRIVER_AUTO_FLUSH_ENABLE
 SemaphoreHandle_t flush_sem = NULL;
 
-void board_lcd_flush_task(void* arg)
+void board_lcd_flush_task(void *arg)
 {
     portBASE_TYPE res;
     while (1) {
         res = xSemaphoreTake(flush_sem, portMAX_DELAY);
         if (res == pdTRUE) {
-            lcd_obj->draw_bitmap(0, 0, (const uint8_t*)lcd_obj->pFrameBuffer, UGFX_DRIVER_SCREEN_WIDTH, UGFX_DRIVER_SCREEN_HEIGHT);
+            lcd_obj->draw_bitmap(0, 0, (const uint8_t *)lcd_obj->pFrameBuffer, UGFX_DRIVER_SCREEN_WIDTH, UGFX_DRIVER_SCREEN_HEIGHT);
             iot_ssd1306_refresh_gram(lcd_obj->get_dev_handle());
             vTaskDelay(UGFX_DRIVER_AUTO_FLUSH_INTERVAL / portTICK_RATE_MS);
         }
@@ -98,7 +99,7 @@ void board_lcd_init()
     /*Initialize LCD*/
     i2c_bus = new CI2CBus(OLED_IIC_NUM, OLED_IIC_SCL_NUM, OLED_IIC_SDA_NUM);
 
-    if(lcd_obj == NULL) {
+    if (lcd_obj == NULL) {
         lcd_obj = new CLcdAdapter(i2c_bus);
     }
 
@@ -111,7 +112,7 @@ void board_lcd_init()
 #endif
 }
 
-void board_lcd_flush(int16_t x, int16_t y, const uint8_t* bitmap, int16_t w, int16_t h)
+void board_lcd_flush(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h)
 {
 #if UGFX_DRIVER_AUTO_FLUSH_ENABLE
     lcd_obj->pFrameBuffer = bitmap;
@@ -131,7 +132,7 @@ void board_lcd_write_data(uint8_t data)
     lcd_obj->writeData(data);
 }
 
-void board_lcd_write_datas(uint8_t* data, uint16_t length)
+void board_lcd_write_datas(uint8_t *data, uint16_t length)
 {
     lcd_obj->writeData(data, length);
 }

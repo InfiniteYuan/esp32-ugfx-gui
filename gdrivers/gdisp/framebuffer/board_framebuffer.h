@@ -17,11 +17,11 @@
 #include "ugfx_driver_config.h"
 
 typedef struct fbInfo {
-    void * pixels;          // The pixel buffer
+    void *pixels;           // The pixel buffer
     coord_t linelen;        // The number of bytes per display line
 } fbInfo_t;
 
-static uint16_t* p_frame = NULL;
+static uint16_t *p_frame = NULL;
 
 static void board_init(GDisplay *g, fbInfo_t *fbi)
 {
@@ -31,7 +31,7 @@ static void board_init(GDisplay *g, fbInfo_t *fbi)
     g->g.Backlight = 255;
     g->g.Contrast = 255;
     fbi->linelen = g->g.Width * sizeof(LLDCOLOR_TYPE);              // bytes per row
-    fbi->pixels = (void*) malloc(g->g.Width * g->g.Height * 2);     // pointer to the memory frame buffer
+    fbi->pixels = (void *) malloc(g->g.Width * g->g.Height * 2);    // pointer to the memory frame buffer
     p_frame = fbi->pixels;
     if (fbi->pixels == NULL) {
         ets_printf("fbi->pixels malloc error\n");

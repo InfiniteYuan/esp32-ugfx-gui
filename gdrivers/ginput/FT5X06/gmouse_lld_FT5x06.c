@@ -21,10 +21,11 @@
 // Hardware definitions
 #include "FT5x06.h"
 
-static bool_t MouseInit(GMouse* m, unsigned driverinstance) 
+static bool_t MouseInit(GMouse *m, unsigned driverinstance)
 {
-    if (!init_board(m, driverinstance))
+    if (!init_board(m, driverinstance)) {
         return FALSE;
+    }
 
     aquire_bus(m);
 
@@ -60,12 +61,12 @@ static bool_t MouseInit(GMouse* m, unsigned driverinstance)
     return TRUE;
 }
 
-static bool_t read_xyz(GMouse* m, GMouseReading* pdr)
+static bool_t read_xyz(GMouse *m, GMouseReading *pdr)
 {
     // Assume not touched.
     pdr->buttons = 0;
     pdr->z = 0;
-    
+
     aquire_bus(m);
 
     // Only take a reading if we are touched.
@@ -77,26 +78,26 @@ static bool_t read_xyz(GMouse* m, GMouseReading* pdr)
         pdr->z = 1;
 
         // Rescale X,Y if we are using self-calibration
-        #if GMOUSE_FT5x06_SELF_CALIBRATE
-            #if GDISP_NEED_CONTROL
-                switch(gdispGGetOrientation(m->display)) {
-                default:
-                case GDISP_ROTATE_0:
-                case GDISP_ROTATE_180:
-                    pdr->x = gdispGGetWidth(m->display) - pdr->x / (4096/gdispGGetWidth(m->display));
-                    pdr->y = pdr->y / (4096/gdispGGetHeight(m->display));
-                    break;
-                case GDISP_ROTATE_90:
-                case GDISP_ROTATE_270:
-                    pdr->x = gdispGGetHeight(m->display) - pdr->x / (4096/gdispGGetHeight(m->display));
-                    pdr->y = pdr->y / (4096/gdispGGetWidth(m->display));
-                    break;
-                }
-            #else
-                pdr->x = gdispGGetWidth(m->display) - pdr->x / (4096/gdispGGetWidth(m->display));
-                pdr->y = pdr->y / (4096/gdispGGetHeight(m->display));
-            #endif
-        #endif
+#if GMOUSE_FT5x06_SELF_CALIBRATE
+#if GDISP_NEED_CONTROL
+        switch (gdispGGetOrientation(m->display)) {
+        default:
+        case GDISP_ROTATE_0:
+        case GDISP_ROTATE_180:
+            pdr->x = gdispGGetWidth(m->display) - pdr->x / (4096 / gdispGGetWidth(m->display));
+            pdr->y = pdr->y / (4096 / gdispGGetHeight(m->display));
+            break;
+        case GDISP_ROTATE_90:
+        case GDISP_ROTATE_270:
+            pdr->x = gdispGGetHeight(m->display) - pdr->x / (4096 / gdispGGetHeight(m->display));
+            pdr->y = pdr->y / (4096 / gdispGGetWidth(m->display));
+            break;
+        }
+#else
+        pdr->x = gdispGGetWidth(m->display) - pdr->x / (4096 / gdispGGetWidth(m->display));
+        pdr->y = pdr->y / (4096 / gdispGGetHeight(m->display));
+#endif
+#endif
     }
 
     release_bus(m);
@@ -104,37 +105,40 @@ static bool_t read_xyz(GMouse* m, GMouseReading* pdr)
 }
 
 const GMouseVMT const GMOUSE_DRIVER_VMT[1] = {{
-    {
-        GDRIVER_TYPE_TOUCH,
-        #if GMOUSE_FT5x06_SELF_CALIBRATE
+        {
+            GDRIVER_TYPE_TOUCH,
+#if GMOUSE_FT5x06_SELF_CALIBRATE
             GMOUSE_VFLG_TOUCH | GMOUSE_VFLG_ONLY_DOWN | GMOUSE_VFLG_POORUPDOWN,
-        #else
+#else
             GMOUSE_VFLG_TOUCH | GMOUSE_VFLG_ONLY_DOWN | GMOUSE_VFLG_POORUPDOWN | GMOUSE_VFLG_CALIBRATE | GMOUSE_VFLG_CAL_TEST,
-        #endif
-        sizeof(GMouse) + GMOUSE_FT5x06_BOARD_DATA_SIZE,
-        _gmouseInitDriver,
-        _gmousePostInitDriver,
-        _gmouseDeInitDriver
-    },
-    1,                // z_max - (currently?) not supported
-    0,                // z_min - (currently?) not supported
-    1,                // z_touchon
-    0,                // z_touchoff
-    {                 // pen_jitter
-        GMOUSE_FT5x06_PEN_CALIBRATE_ERROR,            // calibrate
-        GMOUSE_FT5x06_PEN_CLICK_ERROR,                // click
-        GMOUSE_FT5x06_PEN_MOVE_ERROR                  // move
-    },
-    {                // finger_jitter
-        GMOUSE_FT5x06_FINGER_CALIBRATE_ERROR,        // calibrate
-        GMOUSE_FT5x06_FINGER_CLICK_ERROR,            // click
-        GMOUSE_FT5x06_FINGER_MOVE_ERROR              // move
-    },
-    MouseInit,         // init
-    0,                 // deinit
-    read_xyz,          // get
-    touch_save_calibration,                // calsave
-    touch_load_calibration                 // calload
-}};
+#endif
+            sizeof(GMouse) + GMOUSE_FT5x06_BOARD_DATA_SIZE,
+            _gmouseInitDriver,
+            _gmousePostInitDriver,
+            _gmouseDeInitDriver
+        },
+        1,                // z_max - (currently?) not supported
+        0,                // z_min - (currently?) not supported
+        1,                // z_touchon
+        0,                // z_touchoff
+        {
+            // pen_jitter
+            GMOUSE_FT5x06_PEN_CALIBRATE_ERROR,            // calibrate
+            GMOUSE_FT5x06_PEN_CLICK_ERROR,                // click
+            GMOUSE_FT5x06_PEN_MOVE_ERROR                  // move
+        },
+        {
+            // finger_jitter
+            GMOUSE_FT5x06_FINGER_CALIBRATE_ERROR,        // calibrate
+            GMOUSE_FT5x06_FINGER_CLICK_ERROR,            // click
+            GMOUSE_FT5x06_FINGER_MOVE_ERROR              // move
+        },
+        MouseInit,         // init
+        0,                 // deinit
+        read_xyz,          // get
+        touch_save_calibration,                // calsave
+        touch_load_calibration                 // calload
+    }
+};
 
 #endif /* GFX_USE_GINPUT && GINPUT_NEED_MOUSE */
