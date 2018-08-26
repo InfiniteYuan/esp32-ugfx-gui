@@ -1,6 +1,6 @@
-[submodule "ugfx_gui/ugfx"]
-	path = ugfx_gui/ugfx
-	url = https://git.ugfx.io/ugfx/ugfx.git
 [submodule "spi_devices/lcd/Adafruit-GFX-Library"]
 	path = spi_devices/lcd/Adafruit-GFX-Library
 	url = https://github.com/adafruit/Adafruit-GFX-Library.git
+[submodule "components/ugfx_gui/ugfx"]
+	path = components/ugfx_gui/ugfx
+	url = https://github.com/InfiniteYuan1/ugfx.git
