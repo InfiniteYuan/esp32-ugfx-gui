@@ -11,5 +11,6 @@ UGFX_COMPONENT_DIRS += $(UGFX_COMPONENT_PATH)/components/spi_devices
 UGFX_COMPONENT_DIRS += $(UGFX_COMPONENT_PATH)/components/i2c_devices
 UGFX_COMPONENT_DIRS += $(UGFX_COMPONENT_PATH)/components/i2c_devices/sensor
 UGFX_COMPONENT_DIRS += $(UGFX_COMPONENT_PATH)/components/i2c_devices/others
+UGFX_COMPONENT_DIRS += $(UGFX_COMPONENT_PATH)/components/i2s_devices
 
 EXTRA_COMPONENT_DIRS += $(UGFX_COMPONENT_DIRS)

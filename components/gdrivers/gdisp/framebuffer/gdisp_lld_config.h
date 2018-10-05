@@ -8,15 +8,16 @@
 #ifndef _FB_GDISP_LLD_CONFIG_H_
 #define _FB_GDISP_LLD_CONFIG_H_
 
-/* uGFX Includes */
+/* uGFX Config Includes */
 #include "sdkconfig.h"
-#include "ugfx_driver_config.h"
 
 #if GFX_USE_GDISP
 
 #if CONFIG_UGFX_LCD_DRIVER_FRAMEBUFFER_MODE
 
 #define GDISP_HARDWARE_DRAWPIXEL        TRUE
+#define GDISP_HARDWARE_BITFILLS         TRUE
+#define GDISP_HARDWARE_FILLS            TRUE
 #define GDISP_HARDWARE_PIXELREAD        TRUE
 #define GDISP_HARDWARE_CONTROL          TRUE
 
@@ -39,7 +40,7 @@
 #error "GDISP FrameBuffer: This driver does not support the specified GDISP_LLD_PIXELFORMAT"
 #endif
 
-#endif /* UGFX_LCD_DRIVER_FRAMEBUFFER_MODE */
+#endif /* CONFIG_UGFX_LCD_DRIVER_FRAMEBUFFER_MODE */
 
 #endif /* GFX_USE_GDISP */
 

@@ -60,4 +60,4 @@ int board_touch_get_position(int port);
 }
 #endif
 
-#endif /* __IOT_UGFX_TOUCH_SCREEN_ADAPTER_H__ */
+#endif

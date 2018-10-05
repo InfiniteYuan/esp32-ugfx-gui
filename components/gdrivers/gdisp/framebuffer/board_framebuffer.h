@@ -5,6 +5,9 @@
  *              http://ugfx.org/license.html
  */
 
+#ifndef _FB_GDISP_LLD_BOARD_H
+#define _FB_GDISP_LLD_BOARD_H
+
 /* uGFX Includes */
 #include "gos_freertos_priv.h"
 #include "gfx.h"
@@ -14,7 +17,8 @@
 #include "lcd_adapter.h"
 
 /* uGFX Include */
-#include "ugfx_driver_config.h"
+#include "sdkconfig.h"
+#include "esp_log.h"
 
 typedef struct fbInfo {
     void *pixels;           // The pixel buffer
@@ -26,16 +30,16 @@ static uint16_t *p_frame = NULL;
 static void board_init(GDisplay *g, fbInfo_t *fbi)
 {
     // TODO: Set the details of the frame buffer
-    g->g.Width = UGFX_DRIVER_SCREEN_WIDTH;
-    g->g.Height = UGFX_DRIVER_SCREEN_HEIGHT;
+    g->g.Width = CONFIG_UGFX_DRIVER_SCREEN_WIDTH;
+    g->g.Height = CONFIG_UGFX_DRIVER_SCREEN_HEIGHT;
     g->g.Backlight = 255;
     g->g.Contrast = 255;
     fbi->linelen = g->g.Width * sizeof(LLDCOLOR_TYPE);              // bytes per row
     fbi->pixels = (void *) malloc(g->g.Width * g->g.Height * 2);    // pointer to the memory frame buffer
     p_frame = fbi->pixels;
     if (fbi->pixels == NULL) {
-        ets_printf("fbi->pixels malloc error\n");
-        ets_printf("%s:%d (%s)- assert failed!\n", __FILE__, __LINE__, __FUNCTION__);
+        ESP_LOGE("framebuffer", "fbi->pixels malloc error\n");
+        ESP_LOGE("framebuffer", "%s:%d (%s)- assert failed!\n", __FILE__, __LINE__, __FUNCTION__);
         abort();
     }
     board_lcd_init();
@@ -48,7 +52,7 @@ static void board_flush(GDisplay *g)
     (void) g;
     board_lcd_flush(0, 0, p_frame, g->g.Width, g->g.Height);
 }
-#endif // GDISP_HARDWARE_FLUSH
+#endif //GDISP_HARDWARE_FLUSH
 
 #if GDISP_NEED_CONTROL
 static void board_backlight(GDisplay *g, uint8_t percent)
@@ -71,4 +75,6 @@ static void board_power(GDisplay *g, powermode_t pwr)
     (void) g;
     (void) pwr;
 }
-#endif // GDISP_NEED_CONTROL
+#endif //GDISP_NEED_CONTROL
+
+#endif /* _FB_GDISP_LLD_BOARD_H*/

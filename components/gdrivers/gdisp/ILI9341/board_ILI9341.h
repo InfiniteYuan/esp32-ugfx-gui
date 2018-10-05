@@ -8,9 +8,8 @@
 #ifndef _GDISP_LLD_BOARD_H
 #define _GDISP_LLD_BOARD_H
 
-/* uGFX Includes */
+/* uGFX Config Includes */
 #include "sdkconfig.h"
-#include "ugfx_driver_config.h"
 
 #if CONFIG_UGFX_LCD_DRIVER_API_MODE
 
@@ -77,9 +76,9 @@ static GFXINLINE void write_cmddata(GDisplay *g, uint8_t cmd, uint32_t data)
 
 static GFXINLINE void blit_area(GDisplay *g)
 {
-    const uint16_t  *buffer;
+    const uint16_t	*buffer;
     buffer = (const uint16_t *)g->p.ptr;
-    buffer += g->p.y1 * g->p.x2 + g->p.x1;  // The buffer start position
+    buffer += g->p.y1 * g->p.x2 + g->p.x1;	// The buffer start position
     board_lcd_blit_area(g->p.x, g->p.y, buffer, g->p.cx, g->p.cy);
 }
 
@@ -106,6 +105,6 @@ static GFXINLINE void set_viewport(GDisplay *g)
     write_index (g, ILI9341_MEMORYWRITE_REG);
 }
 
-#endif /* CONFIG_UGFX_LCD_DRIVER_API_MODE */
-
 #endif /* _GDISP_LLD_BOARD_H */
+
+#endif /* CONFIG_UGFX_LCD_DRIVER_API_MODE */

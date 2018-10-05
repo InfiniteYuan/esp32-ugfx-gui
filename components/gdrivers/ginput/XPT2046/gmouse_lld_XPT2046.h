@@ -8,9 +8,8 @@
 #ifndef _GINPUT_LLD_MOUSE_TOUCH_H
 #define _GINPUT_LLD_MOUSE_TOUCH_H
 
-/* uGFX Includes */
+/* uGFX Config Includes */
 #include "sdkconfig.h"
-#include "ugfx_driver_config.h"
 
 /* Touch Includes */
 #include "XPT2046_adapter.h"
@@ -30,10 +29,10 @@
 // How much extra data to allocate at the end of the GMouse structure for the board's use
 #define GMOUSE_BOARD_DATA_SIZE          1
 
-#if UGFX_LCD_DRIVER_FRAMEBUFFER_MODE
+#if CONFIG_UGFX_LCD_DRIVER_FRAMEBUFFER_MODE
 #define TOUCH_CAL_VAL_NAMESPACE   "FbUGfxParam"
 #define TOUCH_CAL_VAL_KEY         "TouchCalVal"
-#elif UGFX_LCD_DRIVER_API_MODE
+#elif CONFIG_UGFX_LCD_DRIVER_API_MODE
 #define TOUCH_CAL_VAL_NAMESPACE   "LcdGfxParam"
 #define TOUCH_CAL_VAL_KEY         "TouchCalVal"
 #else
@@ -82,12 +81,14 @@ static GFXINLINE void touch_save_calibration(GMouse *m, const void *buf, size_t 
 }
 static GFXINLINE bool touch_load_calibration(GMouse *m, void *buf, size_t sz)
 {
-    return iot_param_load((const char *)TOUCH_CAL_VAL_NAMESPACE, (const char *) TOUCH_CAL_VAL_KEY, (void *) buf);
+    esp_err_t res = iot_param_load((const char *)TOUCH_CAL_VAL_NAMESPACE, (const char *) TOUCH_CAL_VAL_KEY, (void *) buf);
+    return (res == ESP_OK);
 }
 
 static GFXINLINE bool touch_erase_calibration(GMouse *m, void *buf, size_t sz)
 {
-    return iot_param_erase((const char *)TOUCH_CAL_VAL_NAMESPACE, (const char *) TOUCH_CAL_VAL_KEY);
+    esp_err_t res = iot_param_erase((const char *)TOUCH_CAL_VAL_NAMESPACE, (const char *) TOUCH_CAL_VAL_KEY);
+    return (res == ESP_OK);
 }
 
 #endif /* _GINPUT_LLD_MOUSE_BOARD_H */

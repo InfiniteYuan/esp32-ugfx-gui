@@ -8,9 +8,8 @@
 #ifndef _GDISP_LLD_CONFIG_H
 #define _GDISP_LLD_CONFIG_H
 
-/* uGFX Includes */
+/* uGFX Config Includes */
 #include "sdkconfig.h"
-#include "ugfx_driver_config.h"
 
 #if GFX_USE_GDISP
 

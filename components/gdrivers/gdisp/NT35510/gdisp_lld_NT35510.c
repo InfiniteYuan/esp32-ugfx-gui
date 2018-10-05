@@ -5,9 +5,8 @@
  *              http://ugfx.org/license.html
  */
 
-/* uGFX Includes */
+/* uGFX Config Includes */
 #include "sdkconfig.h"
-#include "ugfx_driver_config.h"
 
 #if CONFIG_UGFX_LCD_DRIVER_API_MODE
 
@@ -36,10 +35,10 @@ COMPILER_WARNING("GDISP: This low level driver does not support setting a screen
 #include "NT35510.h"
 
 #ifndef GDISP_SCREEN_HEIGHT
-#define GDISP_SCREEN_HEIGHT      UGFX_DRIVER_SCREEN_HEIGHT
+#define GDISP_SCREEN_HEIGHT      CONFIG_UGFX_DRIVER_SCREEN_HEIGHT
 #endif
 #ifndef GDISP_SCREEN_WIDTH
-#define GDISP_SCREEN_WIDTH       UGFX_DRIVER_SCREEN_WIDTH
+#define GDISP_SCREEN_WIDTH       CONFIG_UGFX_DRIVER_SCREEN_WIDTH
 #endif
 #ifndef GDISP_INITIAL_CONTRAST
 #define GDISP_INITIAL_CONTRAST   100
@@ -51,32 +50,32 @@ COMPILER_WARNING("GDISP: This low level driver does not support setting a screen
 // Define one of supported type, if not defined yet
 #if !defined(NT35510_TYPE_R) && !defined(NT35510_TYPE_B)
 // It seems all modern boards is 7735R
-#define NT35510_TYPE_R           TRUE
+#define NT35510_TYPE_R TRUE
 #endif
 
 // Define one of supported color packing, if not defined yet
 #if !defined(NT35510_COLOR_RGB) && !defined(NT35510_COLOR_BRG)
 // It seems all modern boards is RGB
-#define NT35510_COLOR_RGB        TRUE
+#define NT35510_COLOR_RGB TRUE
 #endif
 
 // Strange boars with shifted coords
 #if !defined (NT35510_SHIFTED_COORDS)
-#define NT35510_SHIFTED_COORDS   FALSE
+#define NT35510_SHIFTED_COORDS FALSE
 #endif
 
 #if NT35510_COLOR_RGB
-#define NT35510_MADCTRL_COLOR    0x00
+#define NT35510_MADCTRL_COLOR 0x00
 #else
-#define NT35510_MADCTRL_COLOR    0x08
+#define NT35510_MADCTRL_COLOR 0x08
 #endif
 
 #if NT35510_SHIFTED_COORDS
-#define NT35510_COL_SHIFT        2
-#define NT35510_ROW_SHIFT        1
+#define NT35510_COL_SHIFT 2
+#define NT35510_ROW_SHIFT 1
 #else
-#define NT35510_COL_SHIFT        0
-#define NT35510_ROW_SHIFT        0
+#define NT35510_COL_SHIFT 0
+#define NT35510_ROW_SHIFT 0
 #endif
 
 // Some common routines and macros

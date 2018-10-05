@@ -20,7 +20,7 @@
 
 // This controller supports a special gdispControl() to inverse the display.
 // Pass a parameter of 1 for inverse and 0 for normal.
-#define GDISP_CONTROL_INVERSE           (GDISP_CONTROL_LLD+0)
+#define GDISP_CONTROL_INVERSE           (GDISP_CONTROL_LLD + 0)
 
 #endif /* GFX_USE_GDISP */
 

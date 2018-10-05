@@ -14,5 +14,5 @@
 #include "gfx.h"
 #include "gfxconf.h"
 
-#endif /* _GFXCONF_H */
+#endif /* _GUI_UGFX_H */
 

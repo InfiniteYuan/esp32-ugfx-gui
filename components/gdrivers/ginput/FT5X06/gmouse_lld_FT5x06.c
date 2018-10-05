@@ -5,15 +5,16 @@
  *              http://ugfx.org/license.html
  */
 
-/* uGFX Includes */
-#include "ugfx_driver_config.h"
+/* uGFX Config Includes */
+#include "sdkconfig.h"
 
-#if CONFIG_UGFX_USE_CUSTOM_DRIVER
+#ifdef CONFIG_UGFX_GUI_ENABLE
+
 /* uGFX Includes */
 #include "gos_freertos_priv.h"
 #include "gfx.h"
 
-#if GFX_USE_GINPUT && GINPUT_NEED_MOUSE
+#if (GFX_USE_GINPUT && GINPUT_NEED_MOUSE)
 
 #define GMOUSE_DRIVER_VMT        GMOUSEVMT_FT5X06
 
@@ -69,7 +70,6 @@ static bool_t read_xyz(GMouse *m, GMouseReading *pdr)
     // Assume not touched.
     pdr->buttons = 0;
     pdr->z = 0;
-
     aquire_bus(m);
 
     // Only take a reading if we are touched.
@@ -146,4 +146,4 @@ const GMouseVMT const GMOUSE_DRIVER_VMT[1] = {{
 
 #endif /* GFX_USE_GINPUT && GINPUT_NEED_MOUSE */
 
-#endif /* CONFIG_UGFX_USE_CUSTOM_DRIVER */
+#endif /* CONFIG_UGFX_GUI_ENABLE */

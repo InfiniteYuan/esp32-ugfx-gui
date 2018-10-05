@@ -3,9 +3,8 @@
  * 14.08.2016
  */
 
-/* uGFX Includes */
+/* uGFX Config Includes */
 #include "sdkconfig.h"
-#include "ugfx_driver_config.h"
 
 #if CONFIG_UGFX_LCD_DRIVER_API_MODE
 
@@ -25,7 +24,7 @@ COMPILER_WARNING("GDISP: This low level driver does not support setting a screen
 #undef GDISP_SCREEN_HEIGHT
 #endif
 
-#define GDISP_DRIVER_VMT              GDISPVMT_ST7789
+#define GDISP_DRIVER_VMT          GDISPVMT_ST7789
 
 /* Disp Includes */
 #include "gdisp_lld_config.h"
@@ -34,10 +33,10 @@ COMPILER_WARNING("GDISP: This low level driver does not support setting a screen
 #include "ST7789.h"
 
 #ifndef GDISP_SCREEN_HEIGHT
-#define GDISP_SCREEN_HEIGHT         UGFX_DRIVER_SCREEN_HEIGHT
+#define GDISP_SCREEN_HEIGHT       CONFIG_UGFX_DRIVER_SCREEN_HEIGHT
 #endif
 #ifndef GDISP_SCREEN_WIDTH
-#define GDISP_SCREEN_WIDTH        UGFX_DRIVER_SCREEN_WIDTH
+#define GDISP_SCREEN_WIDTH        CONFIG_UGFX_DRIVER_SCREEN_WIDTH
 #endif
 
 #ifndef GDISP_INITIAL_CONTRAST
@@ -121,7 +120,7 @@ LLDSPEC void gdisp_lld_write_start(GDisplay *g)
 
 LLDSPEC void gdisp_lld_write_color(GDisplay *g)
 {
-    LLDCOLOR_TYPE    c;
+    LLDCOLOR_TYPE c;
     c = gdispColor2Native(g->p.color);
     write_data(g, WRAP_U16(c) );
 }

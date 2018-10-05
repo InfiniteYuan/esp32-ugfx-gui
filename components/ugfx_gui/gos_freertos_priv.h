@@ -24,20 +24,6 @@ extern portMUX_TYPE lockMux_priv;
 /* Type definitions                                                          */
 /*===========================================================================*/
 
-#define gDelayNone			0
-#define gDelayForever		((gDelay)-1)
-typedef uint32_t			gDelay;
-typedef portTickType		gTicks;
-typedef int32_t				gSemcount;
-typedef void				gThreadreturn;
-typedef portBASE_TYPE		gThreadpriority;
-
-#define gThreadpriorityNormal		configMAX_PRIORITIES/2
-
-typedef xSemaphoreHandle		gfxSem;
-typedef xSemaphoreHandle		gfxMutex;
-typedef xTaskHandle				gThread;
-
 /* Additional types are required when FreeRTOS 7.x is used */
 #if !defined(tskKERNEL_VERSION_MAJOR) && !tskKERNEL_VERSION_MAJOR == 8
 	typedef signed char					int8_t

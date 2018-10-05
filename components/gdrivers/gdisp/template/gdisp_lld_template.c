@@ -9,10 +9,6 @@
 #include "gos_freertos_priv.h"
 #include "gfx.h"
 
-/* uGFX Includes */
-#include "gos_freertos_priv.h"
-#include "gfx.h"
-
 #if GFX_USE_GDISP
 
 #define GDISP_DRIVER_VMT          GDISPVMT_TEMPLATE
@@ -36,7 +32,7 @@
 #define GDISP_INITIAL_BACKLIGHT   100
 #endif
 
-#define GDISP_FLG_NEEDFLUSH       (GDISP_FLG_DRIVER<<0)
+#define GDISP_FLG_NEEDFLUSH       (GDISP_FLG_DRIVER << 0)
 
 #ifndef TEMPLATE_LCD_BIAS
 #define TEMPLATE_LCD_BIAS         TEMPLATE_LCD_BIAS_7
@@ -60,16 +56,15 @@
 #define delay(us)           gfxSleepMicroseconds(us)
 #define delay_ms(ms)        gfxSleepMilliseconds(ms)
 
-#define xyaddr(x, y)        ((x) + ((y)>>3)*GDISP_SCREEN_WIDTH)
-#define xybit(y)            (1<<((y)&7))
+#define xyaddr(x, y)        ((x) + ((y) >> 3)*GDISP_SCREEN_WIDTH)
+#define xybit(y)            (1 << ((y) & 7))
 
-/*
+/**
  * As this controller can't update on a pixel boundary we need to maintain the
  * the entire display surface in memory so that we can do the necessary bit
  * operations. Fortunately it is a small display in monochrome.
  * 64 * 128 / 8 = 1024 bytes.
  */
-
 LLDSPEC bool_t gdisp_lld_init(GDisplay *g)
 {
     // The private area is the display surface.
@@ -101,7 +96,7 @@ LLDSPEC bool_t gdisp_lld_init(GDisplay *g)
 #if GDISP_HARDWARE_FLUSH
 LLDSPEC void gdisp_lld_flush(GDisplay *g)
 {
-    unsigned    p;
+    unsigned p;
 
     // Don't flush if we don't need it.
     if (!(g->flags & GDISP_FLG_NEEDFLUSH)) {
@@ -121,12 +116,12 @@ LLDSPEC void gdisp_lld_flush(GDisplay *g)
 
     g->flags &= ~GDISP_FLG_NEEDFLUSH;
 }
-#endif // GDISP_HARDWARE_FLUSH
+#endif
 
 #if GDISP_HARDWARE_DRAWPIXEL
 LLDSPEC void gdisp_lld_draw_pixel(GDisplay *g)
 {
-    coord_t        x, y;
+    coord_t x, y;
 
     switch (g->g.Orientation) {
     default:
@@ -154,12 +149,12 @@ LLDSPEC void gdisp_lld_draw_pixel(GDisplay *g)
     }
     g->flags |= GDISP_FLG_NEEDFLUSH;
 }
-#endif // GDISP_HARDWARE_DRAWPIXEL
+#endif
 
 #if GDISP_HARDWARE_PIXELREAD
 LLDSPEC color_t gdisp_lld_get_pixel_color(GDisplay *g)
 {
-    coord_t        x, y;
+    coord_t x, y;
 
     switch (g->g.Orientation) {
     default:
@@ -182,7 +177,7 @@ LLDSPEC color_t gdisp_lld_get_pixel_color(GDisplay *g)
     }
     return (RAM(g)[xyaddr(x, y)] & xybit(y)) ? White : Black;
 }
-#endif // GDISP_HARDWARE_PIXELREAD
+#endif
 
 #if GDISP_NEED_CONTROL && GDISP_HARDWARE_CONTROL
 LLDSPEC void gdisp_lld_control(GDisplay *g)
@@ -244,6 +239,6 @@ LLDSPEC void gdisp_lld_control(GDisplay *g)
         return;
     }
 }
-#endif // GDISP_NEED_CONTROL && GDISP_HARDWARE_CONTROL
+#endif // GDISP_NEED_CONTROL
 
-#endif /* GFX_USE_GDISP */
+#endif // GFX_USE_GDISP

@@ -5,9 +5,8 @@
  *              http://ugfx.org/license.html
  */
 
-/* uGFX Includes */
+/* uGFX Config Includes */
 #include "sdkconfig.h"
-#include "ugfx_driver_config.h"
 
 #if CONFIG_UGFX_LCD_DRIVER_API_MODE
 
@@ -36,10 +35,10 @@ COMPILER_WARNING("GDISP: This low level driver does not support setting a screen
 #include "ILI9341.h"
 
 #ifndef GDISP_SCREEN_HEIGHT
-#define GDISP_SCREEN_HEIGHT           UGFX_DRIVER_SCREEN_HEIGHT
+#define GDISP_SCREEN_HEIGHT           CONFIG_UGFX_DRIVER_SCREEN_HEIGHT
 #endif
 #ifndef GDISP_SCREEN_WIDTH
-#define GDISP_SCREEN_WIDTH            UGFX_DRIVER_SCREEN_WIDTH
+#define GDISP_SCREEN_WIDTH            CONFIG_UGFX_DRIVER_SCREEN_WIDTH
 #endif
 #ifndef GDISP_INITIAL_CONTRAST
 #define GDISP_INITIAL_CONTRAST        100
@@ -70,7 +69,6 @@ LLDSPEC bool_t gdisp_lld_init(GDisplay *g)
 
     // Release the bus
     release_bus(g);
-
     /* Turn on the back-light */
     set_backlight(g, GDISP_INITIAL_BACKLIGHT);
 
@@ -94,7 +92,7 @@ LLDSPEC void gdisp_lld_write_start(GDisplay *g)
 
 LLDSPEC void gdisp_lld_write_color(GDisplay *g)
 {
-    LLDCOLOR_TYPE    c;
+    LLDCOLOR_TYPE c;
     c = gdispColor2Native(g->p.color);
     write_data(g, WRAP_U16(c) );
 }
@@ -117,7 +115,7 @@ LLDSPEC void gdisp_lld_read_start(GDisplay *g)
 
 LLDSPEC color_t gdisp_lld_read_color(GDisplay *g)
 {
-    uint16_t    data;
+    uint16_t data;
     data = read_data(g);
     return gdispNative2Color(data);
 }
@@ -235,4 +233,4 @@ LLDSPEC void gdisp_lld_control(GDisplay *g)
 
 #endif /* GFX_USE_GDISP */
 
-#endif /* UGFX_LCD_DRIVER_API_MODE */
+#endif /* CONFIG_UGFX_LCD_DRIVER_API_MODE */

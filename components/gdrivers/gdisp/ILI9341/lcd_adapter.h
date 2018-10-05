@@ -33,85 +33,92 @@ extern "C" {
 #endif
 
 /**
-  * @brief Lcd initlize.
-  */
+ * @brief Lcd initlize.
+ */
 void board_lcd_init();
 
 /**
-  * @brief Flush the specified area at (x,y),
-  *        the width of the specified area is w, the height of the specified area is h.
-  *
-  * @param x The ordinate of the starting point of the specified area.
-  * @param y The abscissa of the starting point of the specified region.
-  * @param bitmap Flush data for the specified area.
-  * @param w the width of the specified area.
-  * @param h the height of the specified area.
-  */
+ * @brief Flush the specified area at (x,y),
+ *        the width of the specified area is w, the height of the specified area is h.
+ *
+ * @param x The ordinate of the starting point of the specified area.
+ * @param y The abscissa of the starting point of the specified region.
+ * @param bitmap Flush data for the specified area.
+ * @param w the width of the specified area.
+ * @param h the height of the specified area.
+ */
 void board_lcd_flush(int16_t x, int16_t y, const uint16_t *bitmap, int16_t w, int16_t h);
 
 /**
-   * @brief   Fill an area using a bitmap
-   * @pre		GDISP_HARDWARE_BITFILLS is GFXON
-   *
-   * @param	x,y	The area position
-   * @param	w,h	The area size
-   * @param	bitmap		The pointer to the bitmap
-   *
-   * @note		The parameter variables must not be altered by the driver.
-   */
+ * @brief Fill an area using a bitmap
+ * @pre GDISP_HARDWARE_BITFILLS is GFXON
+ *
+ * @param x,y The area position
+ * @param w,h The area size
+ * @param bitmap The pointer to the bitmap
+ *
+ * @note The parameter variables must not be altered by the driver.
+ */
 void board_lcd_blit_area(int16_t x, int16_t y, uint16_t* bitmap, int16_t w, int16_t h);
 
 /**
-  * @brief Write cmd to lcd.
-  *
-  * @param cmd will write command
-  */
+ * @brief Write cmd to lcd.
+ *
+ * @param cmd will write command
+ */
 void board_lcd_write_cmd(uint8_t cmd);
 
 /**
-  * @brief Write data to lcd.
-  *
-  * @param data will write data
-  */
+ * @brief Write data to lcd.
+ *
+ * @param data will write data
+ */
 void board_lcd_write_data(uint16_t data);
 
 /**
-  * @brief Write byte data to lcd.
-  *
-  * @param data will write a byte data
-  */
+ * @brief Write byte data to lcd.
+ *
+ * @param data will write a byte data
+ */
 void board_lcd_write_data_byte(uint8_t data);
 
 /**
-  * @brief Repeatedly write byte data to lcd point_num times.
-  *
-  * @param data data will write data
-  * @param point_num repeat times
-  */
+ * @brief Repeatedly write byte data to lcd point_num times.
+ *
+ * @param data data will write data
+ * @param point_num repeat times
+ */
 void board_lcd_write_data_byte_repeat(uint16_t data, int point_num);
 
 /**
-  * @brief Write cmd and data to lcd.
-  *
-  * @param cmd will write command
-  * @param data will write data
-  */
+ * @brief Write cmd and data to lcd.
+ *
+ * @param cmd will write command
+ * @param data will write data
+ */
 void board_lcd_write_cmddata(uint8_t cmd, uint32_t data);
 
 /**
-  * @brief Write some data to lcd
-  *
-  * @param data Pointer to write data
-  * @param length The size of the data to be written
-  */
+ * @brief Write some data to lcd
+ *
+ * @param data Pointer to write data
+ * @param length The size of the data to be written
+ */
 void board_lcd_write_datas(uint8_t *data, uint16_t length);
 
 /**
-  * @brief Set backlight of lcd
-  *
-  * @param data backlight value
-  */
+ * @brief Set backlight of lcd
+ *
+ * @param data backlight value
+ */
 void board_lcd_set_backlight(uint16_t data);
+
+/**
+ * @brief Set orientation of lcd
+ *
+ * @param orientation orientation value
+ */
+void board_lcd_set_orientation(uint16_t orientation);
 
 #ifdef __cplusplus
 }

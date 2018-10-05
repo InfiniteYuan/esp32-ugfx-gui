@@ -5,9 +5,8 @@
  *              http://ugfx.org/license.html
  */
 
-/* uGFX Includes */
+/* uGFX Config Includes */
 #include "sdkconfig.h"
-#include "ugfx_driver_config.h"
 
 #if CONFIG_UGFX_LCD_DRIVER_API_MODE
 
@@ -17,7 +16,7 @@
 
 #if GFX_USE_GDISP
 
-#define GDISP_DRIVER_VMT           GDISPVMT_SSD1306
+#define GDISP_DRIVER_VMT            GDISPVMT_SSD1306
 
 /* Disp Includes */
 #include "gdisp_lld_config.h"
@@ -39,14 +38,14 @@
 #define GDISP_INITIAL_BACKLIGHT    100
 #endif
 #ifdef SSD1306_PAGE_PREFIX
-#define SSD1306_PAGE_WIDTH         (GDISP_SCREEN_WIDTH+1)
+#define SSD1306_PAGE_WIDTH         (GDISP_SCREEN_WIDTH + 1)
 #define SSD1306_PAGE_OFFSET        1
 #else
 #define SSD1306_PAGE_WIDTH         GDISP_SCREEN_WIDTH
 #define SSD1306_PAGE_OFFSET        0
 #endif
 
-#define GDISP_FLG_NEEDFLUSH        (GDISP_FLG_DRIVER<<0)
+#define GDISP_FLG_NEEDFLUSH        (GDISP_FLG_DRIVER << 0)
 
 // Some common routines and macros
 #define RAM(g)                           ((uint8_t *)g->priv)
@@ -57,8 +56,8 @@
 #define delay(us)            gfxSleepMicroseconds(us)
 #define delayms(ms)          gfxSleepMilliseconds(ms)
 
-#define xyaddr(x, y)         (SSD1306_PAGE_OFFSET + (x) + ((y)>>3)*SSD1306_PAGE_WIDTH)
-#define xybit(y)             (1<<((y)&7))
+#define xyaddr(x, y)         (SSD1306_PAGE_OFFSET + (x) + ((y) >> 3)*SSD1306_PAGE_WIDTH)
+#define xybit(y)             (1 << ((y) & 7))
 
 /**
  * As this controller can't update on a pixel boundary we need to maintain the
@@ -163,7 +162,7 @@ LLDSPEC void gdisp_lld_flush(GDisplay *g)
 
     g->flags &= ~GDISP_FLG_NEEDFLUSH;
 }
-#endif // GDISP_HARDWARE_FLUSH/
+#endif
 
 #if GDISP_HARDWARE_FILLS
 LLDSPEC void gdisp_lld_fill_area(GDisplay *g)
@@ -235,7 +234,7 @@ LLDSPEC void gdisp_lld_fill_area(GDisplay *g)
     }
     g->flags |= GDISP_FLG_NEEDFLUSH;
 }
-#endif // GDISP_HARDWARE_FILLS
+#endif
 
 #if GDISP_HARDWARE_DRAWPIXEL
 LLDSPEC void gdisp_lld_draw_pixel(GDisplay *g)
@@ -269,7 +268,7 @@ LLDSPEC void gdisp_lld_draw_pixel(GDisplay *g)
 
     g->flags |= GDISP_FLG_NEEDFLUSH;
 }
-#endif // GDISP_HARDWARE_DRAWPIXEL
+#endif
 
 #if GDISP_HARDWARE_PIXELREAD
 LLDSPEC color_t gdisp_lld_get_pixel_color(GDisplay *g)
@@ -297,7 +296,7 @@ LLDSPEC color_t gdisp_lld_get_pixel_color(GDisplay *g)
     }
     return (RAM(g)[xyaddr(x, y)] & xybit(y)) ? White : Black;
 }
-#endif // GDISP_HARDWARE_PIXELREAD *
+#endif
 
 #if GDISP_NEED_CONTROL && GDISP_HARDWARE_CONTROL
 LLDSPEC void gdisp_lld_control(GDisplay *g)
@@ -371,4 +370,4 @@ LLDSPEC void gdisp_lld_control(GDisplay *g)
 
 #endif /* GFX_USE_GDISP */
 
-#endif /* UGFX_LCD_DRIVER_API_MODE */
+#endif /* CONFIG_UGFX_LCD_DRIVER_API_MODE */

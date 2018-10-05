@@ -4,9 +4,9 @@
  *
  *              http://ugfx.org/license.html
  */
-/* uGFX Includes  */
-#include "iot_ugfx.h"
-#include "ugfx_driver_config.h"
+
+/* uGFX Config Includes  */
+#include "sdkconfig.h"
 
 #if CONFIG_UGFX_LCD_DRIVER_FRAMEBUFFER_MODE
 
@@ -54,67 +54,54 @@ LLDSPEC void gdisp_lld_flush(GDisplay *g)
 {
     board_flush(g);
 }
-#endif
+#endif //GDISP_HARDWARE_FLUSH
 
 LLDSPEC void gdisp_lld_draw_pixel(GDisplay *g)
 {
-    unsigned pos;
-
-#if GDISP_NEED_CONTROL
-    switch (g->g.Orientation) {
-    case GDISP_ROTATE_0:
-    default:
-        pos = PIXIL_POS(g, g->p.x, g->p.y);
-        break;
-    case GDISP_ROTATE_90:
-        pos = PIXIL_POS(g, g->p.y, g->g.Width - g->p.x - 1);
-        break;
-    case GDISP_ROTATE_180:
-        pos = PIXIL_POS(g, g->g.Width - g->p.x - 1, g->g.Height - g->p.y - 1);
-        break;
-    case GDISP_ROTATE_270:
-        pos = PIXIL_POS(g, g->g.Height - g->p.y - 1, g->p.x);
-        break;
-    }
-#else
-    pos = PIXIL_POS(g, g->p.x, g->p.y);
-#endif
-
-    PIXEL_ADDR(g, pos)[0] = gdispColor2Native(g->p.color);
+    PIXEL_ADDR(g, PIXIL_POS(g, g->p.x, g->p.y))[0] = gdispColor2Native(g->p.color);
 }
 
 LLDSPEC color_t gdisp_lld_get_pixel_color(GDisplay *g)
 {
-    unsigned pos;
     LLDCOLOR_TYPE color;
-
-#if GDISP_NEED_CONTROL
-    switch (g->g.Orientation) {
-    case GDISP_ROTATE_0:
-    default:
-        pos = PIXIL_POS(g, g->p.x, g->p.y);
-        break;
-    case GDISP_ROTATE_90:
-        pos = PIXIL_POS(g, g->p.y, g->g.Width - g->p.x - 1);
-        break;
-    case GDISP_ROTATE_180:
-        pos = PIXIL_POS(g, g->g.Width - g->p.x - 1, g->g.Height - g->p.y - 1);
-        break;
-    case GDISP_ROTATE_270:
-        pos = PIXIL_POS(g, g->g.Height - g->p.y - 1, g->p.x);
-        break;
-    }
-#else
-    pos = PIXIL_POS(g, g->p.x, g->p.y);
-#endif
-
-    color = PIXEL_ADDR(g, pos)[0];
+    color = PIXEL_ADDR(g, PIXIL_POS(g, g->p.x, g->p.y))[0];
     return gdispNative2Color(color);
 }
+
+#if GDISP_HARDWARE_FILLS
+LLDSPEC void gdisp_lld_fill_area(GDisplay *g)
+{
+    LLDCOLOR_TYPE *pointer;
+    LLDCOLOR_TYPE c = gdispColor2Native(g->p.color);
+    for (uint16_t i = 0; i < g->p.cy; ++i) {
+        pointer = PIXEL_ADDR(g, PIXIL_POS(g, g->p.x, g->p.y + i));
+        for (uint16_t j = 0; j < g->p.cx; ++j) {
+            *pointer++ = c;
+        }
+    }
+}
+#endif // GDISP_HARDWARE_FILLS
+
+#if GDISP_HARDWARE_BITFILLS
+LLDSPEC void gdisp_lld_blit_area(GDisplay *g)
+{
+    const color_t *buffer;
+    LLDCOLOR_TYPE *pointer, *pointer1;
+    buffer = (const color_t *)g->p.ptr + g->p.y1 * g->p.x2 + g->p.x1; // The buffer start position
+    for (uint16_t i = 0; i < g->p.cy; ++i) {
+        pointer = PIXEL_ADDR(g, PIXIL_POS(g, g->p.x, g->p.y + i));
+        pointer1 = buffer + i * g->p.x2;
+        for (uint16_t j = 0; j < g->p.cx; ++j) {
+            *pointer++ = *pointer1++;
+        }
+    }
+}
+#endif // GDISP_HARDWARE_BITFILLS
 
 #if GDISP_NEED_CONTROL
 LLDSPEC void gdisp_lld_control(GDisplay *g)
 {
+    coord_t tmp;
     switch (g->p.x) {
     case GDISP_CONTROL_POWER:
         if (g->g.Powermode == (powermode_t)g->p.ptr) {
@@ -131,27 +118,26 @@ LLDSPEC void gdisp_lld_control(GDisplay *g)
         return;
 
     case GDISP_CONTROL_ORIENTATION:
-        if (g->g.Orientation == (orientation_t)g->p.ptr) {
-            return;
-        }
         switch ((orientation_t)g->p.ptr) {
         case GDISP_ROTATE_0:
-        case GDISP_ROTATE_180:
-            if (g->g.Orientation == GDISP_ROTATE_90 || g->g.Orientation == GDISP_ROTATE_270) {
-                coord_t        tmp;
-                tmp = g->g.Width;
-                g->g.Width = g->g.Height;
-                g->g.Height = tmp;
-            }
+            board_lcd_set_orientation(0);
             break;
         case GDISP_ROTATE_90:
+            board_lcd_set_orientation(90);
+            tmp = g->g.Width;
+            g->g.Width = g->g.Height;
+            g->g.Height = tmp;
+            ((fbPriv_t *)g->priv)->fbi.linelen = g->g.Width * sizeof(LLDCOLOR_TYPE); // bytes per row
+            break;
+        case GDISP_ROTATE_180:
+            board_lcd_set_orientation(180);
+            break;
         case GDISP_ROTATE_270:
-            if (g->g.Orientation == GDISP_ROTATE_0 || g->g.Orientation == GDISP_ROTATE_180) {
-                coord_t        tmp;
-                tmp = g->g.Width;
-                g->g.Width = g->g.Height;
-                g->g.Height = tmp;
-            }
+            board_lcd_set_orientation(270);
+            tmp = g->g.Width;
+            g->g.Width = g->g.Height;
+            g->g.Height = tmp;
+            ((fbPriv_t *)g->priv)->fbi.linelen = g->g.Width * sizeof(LLDCOLOR_TYPE); // bytes per row
             break;
         default:
             return;

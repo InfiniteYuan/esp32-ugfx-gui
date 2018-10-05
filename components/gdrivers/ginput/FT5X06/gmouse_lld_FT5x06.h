@@ -8,6 +8,9 @@
 #ifndef _GINPUT_LLD_MOUSE_BOARD_H
 #define _GINPUT_LLD_MOUSE_BOARD_H
 
+/* uGFX Config Includes */
+#include "sdkconfig.h"
+
 /* Touch Includes */
 #include "driver/i2c.h"
 #include "iot_ft5x06.h"
@@ -34,10 +37,10 @@
 //       It requires the active area of the touch panel to exactly match the display size.
 #define GMOUSE_FT5x06_SELF_CALIBRATE            GFXOFF
 
-#if UGFX_LCD_DRIVER_FRAMEBUFFER_MODE
+#if CONFIG_UGFX_LCD_DRIVER_FRAMEBUFFER_MODE
 #define TOUCH_CAL_VAL_NAMESPACE   "FbUGfxParam"
 #define TOUCH_CAL_VAL_KEY         "TouchCalVal"
-#elif UGFX_LCD_DRIVER_API_MODE
+#elif CONFIG_UGFX_LCD_DRIVER_API_MODE
 #define TOUCH_CAL_VAL_NAMESPACE   "LcdGfxParam"
 #define TOUCH_CAL_VAL_KEY         "TouchCalVal"
 #else
@@ -45,9 +48,6 @@
 #define TOUCH_CAL_VAL_KEY         "touchCalVal"
 #endif
 
-#define I2C_NUM    (0)
-#define I2C_SCL    (3)
-#define I2C_SDA    (1)
 static ft5x06_handle_t dev = NULL;
 
 static bool_t init_board(GMouse *m, unsigned driverinstance)
@@ -55,13 +55,13 @@ static bool_t init_board(GMouse *m, unsigned driverinstance)
     i2c_bus_handle_t i2c_bus = NULL;
     i2c_config_t conf = {
         .mode = I2C_MODE_MASTER,
-        .sda_io_num = I2C_SDA,
+        .sda_io_num = CONFIG_UGFX_TOUCH_SDA_GPIO,
         .sda_pullup_en = GPIO_PULLUP_ENABLE,
-        .scl_io_num = I2C_SCL,
+        .scl_io_num = CONFIG_UGFX_TOUCH_SCL_GPIO,
         .scl_pullup_en = GPIO_PULLUP_ENABLE,
         .master.clk_speed = 200000,
     };
-    i2c_bus = iot_i2c_bus_create(I2C_NUM, &conf);
+    i2c_bus = iot_i2c_bus_create(CONFIG_UGFX_TOUCH_IIC_NUM, &conf);
     dev = iot_ft5x06_create(i2c_bus, FT5X06_ADDR_DEF);
     
     esp_err_t err = nvs_flash_init();

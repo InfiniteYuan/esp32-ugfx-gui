@@ -5,17 +5,18 @@
  *              http://ugfx.org/license.html
  */
 
-/* uGFX Includes */
-#include "ugfx_driver_config.h"
+/* uGFX Config Includes */
+#include "sdkconfig.h"
 
-#if CONFIG_UGFX_USE_CUSTOM_DRIVER
+#ifdef CONFIG_UGFX_GUI_ENABLE
+
 /* uGFX Includes */
 #include "gos_freertos_priv.h"
 #include "gfx.h"
 
 #if (GFX_USE_GINPUT && GINPUT_NEED_MOUSE)
 
-#define GMOUSE_DRIVER_VMT        GMOUSEVMT_XPT2046
+#define GMOUSE_DRIVER_VMT    GMOUSEVMT_XPT2046
 
 /* Input Includes */
 #include "src/ginput/ginput_driver_mouse.h"
@@ -28,8 +29,6 @@
 
 static bool_t touch_get_xyz(GMouse *m, GMouseReading *pdr)
 {
-    (void)m;
-
     // No buttons
     pdr->buttons = 0;
     pdr->z = 0;
@@ -38,7 +37,6 @@ static bool_t touch_get_xyz(GMouse *m, GMouseReading *pdr)
         pdr->z = 1;                        // Set to Z_MAX as we are pressed
 
         aquire_bus(m);
-
         read_value(m, CMD_X);              // Dummy read - disable PenIRQ
         pdr->x = read_value(m, CMD_X);     // Read X-Value
 
@@ -88,4 +86,4 @@ const GMouseVMT const GMOUSE_DRIVER_VMT[1] = {{
 
 #endif /* GFX_USE_GINPUT && GINPUT_NEED_MOUSE */
 
-#endif /* CONFIG_UGFX_USE_CUSTOM_DRIVER */
+#endif /* CONFIG_UGFX_GUI_ENABLE */

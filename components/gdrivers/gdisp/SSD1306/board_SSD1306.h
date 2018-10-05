@@ -8,11 +8,10 @@
 #ifndef _GDISP_LLD_BOARD_H
 #define _GDISP_LLD_BOARD_H
 
-/* uGFX Includes */
+/* uGFX Config Includes */
 #include "sdkconfig.h"
-#include "ugfx_driver_config.h"
 
-#if UGFX_LCD_DRIVER_API_MODE
+#if CONFIG_UGFX_LCD_DRIVER_API_MODE
 
 /* uGFX Includes */
 #include "gos_freertos_priv.h"
@@ -60,6 +59,6 @@ static GFXINLINE void write_data(GDisplay *g, uint8_t *data, uint16_t length)
     board_lcd_write_datas(data, length);
 }
 
-#endif /* UGFX_LCD_DRIVER_API_MODE */
+#endif /* CONFIG_UGFX_LCD_DRIVER_API_MODE */
 
 #endif /* _GDISP_LLD_BOARD_H */
