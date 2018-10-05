@@ -6,6 +6,8 @@ use ugfx on esp32,with some lcd、touch device drivers
 
 1.copy components of the esp32-lvgl-gui to components of esp-idf as a independent component
 
-2.run `make menuconfig` to configuration gui
+2.add components path to `EXTRA_COMPONENT_DIRS` 
 
-3.add some drivers for ugfx (option)
+3.run `make menuconfig` to configuration gui
+
+4.add some drivers for ugfx (option)
