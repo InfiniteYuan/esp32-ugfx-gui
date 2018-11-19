@@ -11,3 +11,7 @@ use ugfx on esp32,with some lcd、touch device drivers
 3.run `make menuconfig` to configuration gui
 
 4.add some drivers for ugfx (option)
+
+## Video
+
+[Twitter Video](https://twitter.com/InfiniteYuan/status/1031738527266947072)
