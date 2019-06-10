@@ -1,7 +1,6 @@
 #
-# "main" pseudo-component makefile.
+# Main Makefile. This is basically the same as a component makefile.
 #
-# (Uses default behaviour of compiling all source files in directory, adding 'include' to include path.)
 
 # componet standalone mode
 ifndef CONFIG_IOT_SOLUTION_EMBED   
@@ -11,7 +10,7 @@ COMPONENT_SRCDIRS := .
 
 else
 
-ifdef CONFIG_IOT_TOUCH_SCREEN_ENABLE
+ifdef CONFIG_IOT_EINK_ENABLE
 COMPONENT_ADD_INCLUDEDIRS := include
 COMPONENT_SRCDIRS := .
 else
