@@ -14,4 +14,4 @@ use ugfx on esp32,with some lcd、touch device drivers
 
 ## Video
 
-[Twitter Video](https://twitter.com/InfiniteYuan/status/1031738527266947072)
+[uGFX example Twitter Video](https://twitter.com/InfiniteYuan/status/1031738527266947072)
